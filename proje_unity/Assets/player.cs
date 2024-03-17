@@ -25,6 +25,12 @@ public class player : MonoBehaviour
     [SerializeField] private float dashCooldown;
     private float dashCooldownTimer;
 
+
+    [Header("Attack info")]
+    private bool isAttacking;
+    private int comboCounter;
+
+
     [Header("Collision info")]
 
     [SerializeField] private float groundCheckDistance;
@@ -85,6 +91,13 @@ public class player : MonoBehaviour
 
     }
 
+
+    public void AttackOver()
+    {
+        isAttacking = false;
+    }
+
+
     private void CollisionChecks()
     {
         isGrounded = Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, whatIsGround);
@@ -93,6 +106,11 @@ public class player : MonoBehaviour
     private void CheckInput()
     {
         xInput = Input.GetAxisRaw("Horizontal"); //unityde input 1 -1
+
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            isAttacking = true;
+        }
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -147,6 +165,8 @@ public class player : MonoBehaviour
         anim.SetBool("isMoving", isMoving);
         anim.SetBool("isGrounded", isGrounded);
         anim.SetBool("isDashing", dashTime > 0);
+        anim.SetBool("isAttacking", isAttacking);
+        anim.SetInteger("comboCounter", comboCounter);
     }
 
     private void Flip()
