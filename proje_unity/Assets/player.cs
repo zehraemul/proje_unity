@@ -2,19 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class player : MonoBehaviour
+public class player : Entity
 {
 
-    private Rigidbody2D rb;
+   /* private Rigidbody2D rb;
+    private Animator anim;*/
     private float xInput;
     [SerializeField] private float moveSpeed;
     [SerializeField] private float jumpForce;
 
-    private Animator anim;
 
     //[SerializeField] private bool isMoving;
-    private int facingDirection = 1;
-    private bool isFacingRight = true;
+   
 
 
     [Header("Dash info")]
@@ -27,26 +26,29 @@ public class player : MonoBehaviour
 
 
     [Header("Attack info")]
+    private float comboTimeWindow;
+   [SerializeField] private float comboTime = 0.3f;
     private bool isAttacking;
     private int comboCounter;
+    
 
-
-    [Header("Collision info")]
-
-    [SerializeField] private float groundCheckDistance;
-    [SerializeField] private LayerMask whatIsGround;
-    private bool isGrounded;
-
-    void Start()
+    protected override void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-
-        anim = GetComponentInChildren<Animator>();
-     
+        base.Start();
     }
 
-    void Update()
+    /*  void Start()
+      {
+          rb = GetComponent<Rigidbody2D>();
+
+          anim = GetComponentInChildren<Animator>();
+
+      }*/
+
+  protected override  void Update()
     {
+
+        base.Update();
         Movement();
         CheckInput();
 
@@ -59,12 +61,12 @@ public class player : MonoBehaviour
         /// Debug.Log(Input.GetAxisRaw("Horizontal")); a d 1 -1
         /// 
 
-        CollisionChecks();
+       
 
        // dashTime = dashTime - Time.deltaTime;
         dashTime -= Time.deltaTime;
         dashCooldownTimer -= Time.deltaTime;
-
+        comboTimeWindow -= Time.deltaTime;
       
         /*
         if (dashTime > 0)
@@ -95,13 +97,17 @@ public class player : MonoBehaviour
     public void AttackOver()
     {
         isAttacking = false;
+        comboCounter++;
+
+        if (comboCounter > 2)
+        {
+            comboCounter = 0;
+        }
+      
     }
 
 
-    private void CollisionChecks()
-    {
-        isGrounded = Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, whatIsGround);
-    }
+ 
 
     private void CheckInput()
     {
@@ -109,7 +115,7 @@ public class player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            isAttacking = true;
+            StartAttackEvent();
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -123,9 +129,25 @@ public class player : MonoBehaviour
         }
     }
 
+    private void StartAttackEvent()
+    {
+
+        if (!isGrounded)
+        {
+            return;
+        }
+        if (comboTimeWindow < 0)
+        {
+            comboCounter = 0;
+        }
+
+        isAttacking = true;
+        comboTimeWindow = comboTime;
+    }
+
     private void DashAbility()
     {
-        if(dashCooldownTimer < 0)
+        if(dashCooldownTimer < 0 && !isAttacking)
         {
 
         dashCooldownTimer = dashCooldown;
@@ -137,9 +159,15 @@ public class player : MonoBehaviour
     private void Movement()
     {
 
-        if (dashTime > 0)
+
+        if (isAttacking)
         {
-            rb.velocity = new Vector2(xInput * dashSpeed, 0);
+            rb.velocity = new Vector2(0, 0);
+        }
+
+        else if (dashTime > 0)
+        {
+            rb.velocity = new Vector2(facingDirection * dashSpeed, 0);
         }
         else
         {
@@ -169,12 +197,6 @@ public class player : MonoBehaviour
         anim.SetInteger("comboCounter", comboCounter);
     }
 
-    private void Flip()
-    {
-        facingDirection = facingDirection * -1;
-        isFacingRight = !isFacingRight;
-        transform.Rotate(0, 180, 0);
-    }
 
     private void FlipController()
     {
@@ -191,8 +213,5 @@ public class player : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.y - groundCheckDistance));
-    }
+
 }

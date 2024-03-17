@@ -20,10 +20,8 @@ AnimationClip:
   m_PPtrCurves:
   - serializedVersion: 2
     curve:
-    - time: 0
-      value: {fileID: -6442761953431332421, guid: 3a485fe8914c447489215c33f43827b9, type: 3}
     - time: 0.1
-      value: {fileID: -7823500323640422531, guid: 3a485fe8914c447489215c33f43827b9, type: 3}
+      value: {fileID: -6442761953431332421, guid: 3a485fe8914c447489215c33f43827b9, type: 3}
     - time: 0.2
       value: {fileID: 3272844186751121127, guid: 3a485fe8914c447489215c33f43827b9, type: 3}
     - time: 0.3
@@ -55,7 +53,6 @@ AnimationClip:
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
     - {fileID: -6442761953431332421, guid: 3a485fe8914c447489215c33f43827b9, type: 3}
-    - {fileID: -7823500323640422531, guid: 3a485fe8914c447489215c33f43827b9, type: 3}
     - {fileID: 3272844186751121127, guid: 3a485fe8914c447489215c33f43827b9, type: 3}
     - {fileID: 8629003983396144442, guid: 3a485fe8914c447489215c33f43827b9, type: 3}
     - {fileID: -6211648682532063752, guid: 3a485fe8914c447489215c33f43827b9, type: 3}
@@ -86,6 +83,27 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0
+    functionName: AnimationTrigger
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0
+    functionName: 
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0
+    functionName: 
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.5
     functionName: AnimationTrigger
     data: 
     objectReferenceParameter: {fileID: 0}
